@@ -11,11 +11,12 @@ Impartida por el profesor _Frances Aràndiga Llaudes_
     - `metropolis`
     - Otros paquetes de LaTeX habituales
 - Fuente [Fira Sans](https://fonts.google.com/specimen/Fira+Sans)
+- Python con [Invoke](https://www.pyinvoke.org/)
 
 ## Compilación
 
 Para compilar el documento, ejecutar desde la raíz del repositorio:
 
 ```bash
-latexmk main.tex
+inv build
 ```
