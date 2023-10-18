@@ -1,0 +1,34 @@
+\documentclass{beamer}
+
+\usepackage[spanish]{babel}
+
+\usetheme[
+  progressbar=frametitle,
+  block=fill,
+]{metropolis}
+\usefonttheme[onlymath]{serif}
+
+\usepackage{multicol}
+
+\title{La interpolación de Lagrange}
+\subtitle{Una introducción al concepto de interpolación}
+\author{Francisco González Rubio \and Pedro Pasalodos Guiral%
+  \and Mario Vago Marzal}
+\date{Curso 2023--2024}
+\institute{Universitat de València}
+
+\begin{document}
+  {
+    % A workaround to hide an overfull \vbox warning produced by
+    % the title frame of the Metropolis theme.
+    \vfuzz=16pt
+    \maketitle
+  }
+
+  \begin{frame}{Índice}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tableofcontents
+  \end{frame}
+
+  \section{Introducción}
+\end{document}
