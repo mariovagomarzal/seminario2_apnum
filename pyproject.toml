@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "lagrange"
+version = "0.1.0"
+description = ""
+authors = ["Mario Vago Marzal <mariovagomarzal@gmail.com>"]
+license = "Unlicense"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+invoke = "^2.2.0"
+Pygments = "^2.16.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
