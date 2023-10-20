@@ -7,7 +7,10 @@ license = "Unlicense"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "~3.11"
+matplotlib = "^3.8.0"
+tikzplotlib = "^0.10.1"
+numpy = "^1.26.1"
 
 [tool.poetry.group.dev.dependencies]
 invoke = "^2.2.0"
