@@ -1,11 +1,13 @@
 import numpy as np
+import sympy as sp
 
 
-def diferencias_divididas(nodos, f_nodos):
+def diferencias_divididas(nodos: np.ndarray, f_nodos: np.ndarray):
     """
     Calcula las diferencias divididas de Newton
     :param nodos: nodos
     :param f_nodos: f(nodos)
+    :param x: punto a evaluar
     :return: tabla de diferencias divididas
     """
     n = len(nodos)
@@ -20,7 +22,7 @@ def diferencias_divididas(nodos, f_nodos):
     # Devuelve la diagonal principal
     return tabla[0, :]
 
-def lagrange(x, nodos, f_nodos):
+def lagrange(nodos: np.ndarray, f_nodos: np.ndarray, x: sp.Symbol):
     """
     Evalua el polinomio interpolador de Lagrange
     :param x: punto a evaluar
