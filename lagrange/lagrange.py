@@ -1,3 +1,4 @@
+"""Funciones para el método de Lagrange."""
 import numpy as np
 import sympy as sp
 

@@ -1,3 +1,4 @@
+"""Utilidades para generar tablas LaTeX."""
 from pathlib import Path
 import datetime as dt
 

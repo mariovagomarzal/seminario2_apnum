@@ -1,3 +1,4 @@
+"""Utilidades para el módulo lagrange."""
 import datetime as dt
 
 
