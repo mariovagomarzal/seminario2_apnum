@@ -1,5 +1,5 @@
 ## Custom ignore rules
-data/*.csv
+*-out.csv
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

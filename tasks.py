@@ -7,12 +7,14 @@ from lagrange.normalizador import normalizar, guardar_csv
 @task
 def clean(c):
     print("Limpiando...")
+    for out_csv in Path("data").glob("*-out.csv"):
+        out_csv.unlink()
     c.run("latexmk -C")
 
 @task
 def datos(_):
     for xlsx in Path("data").glob("*.xlsx"):
-        csv = xlsx.with_suffix(".csv")
+        csv = Path("data") / f"{xlsx.stem}-out.csv"
         if not csv.exists():
             print(f"Normalizando {xlsx}...")
             df = normalizar(xlsx)
