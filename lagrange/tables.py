@@ -11,7 +11,7 @@ from lagrange.constantes import (
     TABLA_TIEMPO_HORA,
     TABLA_TIEMPO_MINUTOS,
 )
-from lagrange.utils import minutos_a_hora
+from lagrange.utils import format_float, minutos_a_hora
 
 
 def tabla_glucosa(
@@ -55,9 +55,9 @@ def tabla_glucosa(
         if formato_hora:
             tiempo = minutos_a_hora(row[NOMBRE_TIEMPO], hora_inicio)
         else:
-            tiempo = f"${row[NOMBRE_TIEMPO]}$"
+            tiempo = f"${format_float(row[NOMBRE_TIEMPO])}$"
 
-        latex += f"{tiempo} & {row[NOMBRE_GLUCOSA]:.2f} \\\\\n"
+        latex += f"{tiempo} & ${row[NOMBRE_GLUCOSA]:.2f}$ \\\\\n"
 
         if not mostrar_todo and i == inicio - 1:
             latex += "\\vdots & \\vdots \\\\\n"
