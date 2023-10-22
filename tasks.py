@@ -11,11 +11,14 @@ def clean(c):
 
 @task
 def datos(_):
-    print("Normalizando datos...")
-    datos = Path("data")
-    for fichero in datos.glob("*.xlsx"):
-        df = normalizar(fichero)
-        guardar_csv(df, fichero.with_suffix(".csv"))
+    # Si hay ficheros .xlsx en data sin su correspondiente .csv,
+    # se normalizan y se guardan como .csv
+    for xlsx in Path("data").glob("*.xlsx"):
+        csv = xlsx.with_suffix(".csv")
+        if not csv.exists():
+            print(f"Normalizando {xlsx}...")
+            df = normalizar(xlsx)
+            guardar_csv(df, csv)
 
 @task(datos)
 def build(c, pythontex=False):
