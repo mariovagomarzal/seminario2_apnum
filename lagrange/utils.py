@@ -1,5 +1,6 @@
 import datetime as dt
 
+
 def minutos_a_hora(minutos: float, inicio: dt.time = dt.time(0)) -> dt.time:
     """
     Convierte un número de minutos a un objeto `time`.
