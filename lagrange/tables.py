@@ -15,7 +15,7 @@ def generar_tabla(datos: Path, inicio: int = -1, final: int = -1) -> str:
     """
     
     # Leer datos
-    df = pd.read_csv(datos)
+    df = pd.read_csv(datos, parse_dates=["hora"])
 
     if inicio < 0 or final < 0:
         inicio = len(df)
@@ -36,8 +36,9 @@ def generar_tabla(datos: Path, inicio: int = -1, final: int = -1) -> str:
                 latex += "$\\vdots$ & $\\vdots$ \\\\\n"
                 primera_vez = False
         else:
-            latex += f"{tiempo_a_hora(row['tiempo'])} \
-                & {row['glucosa']} \\\\\n"
+            # Glucosa con dos decimales
+            latex += f"{tiempo_a_hora(row['hora'])} \
+                & ${row['glucosa']:.2f}$ \\\\\n"
 
     latex += "\\bottomrule\n"
     latex += "\\end{tabular}\n"
