@@ -6,7 +6,10 @@
   progressbar=frametitle,
   block=fill,
 ]{metropolis}
-\usefonttheme[onlymath]{serif}
+
+% NOTE: Los "frames" que contengan código Python deben tener el
+%       la opción "fragile" para que funcionen correctamente.
+\usepackage[runall, gobble=auto]{pythontex}
 
 \usepackage{multicol}
 
@@ -14,6 +17,11 @@
 
 \usepackage{mathtools}
 \usepackage{units}
+
+\usepackage{tikz}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \title{La interpolación de Lagrange}
 \subtitle{Una introducción al concepto de interpolación}
