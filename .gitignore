@@ -1,3 +1,6 @@
+## Custom ignore rules
+data/*.csv
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
