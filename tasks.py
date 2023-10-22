@@ -18,6 +18,9 @@ def datos(_):
         guardar_csv(df, fichero.with_suffix(".csv"))
 
 @task(datos)
-def build(c):
+def build(c, pythontex=False):
     print("Compilando LaTeX...")
+    if pythontex:
+        c.run("latexmk main.tex")
+        c.run("pythontex main.tex")
     c.run("latexmk main.tex")
