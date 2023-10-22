@@ -11,8 +11,6 @@ def clean(c):
 
 @task
 def datos(_):
-    # Si hay ficheros .xlsx en data sin su correspondiente .csv,
-    # se normalizan y se guardan como .csv
     for xlsx in Path("data").glob("*.xlsx"):
         csv = xlsx.with_suffix(".csv")
         if not csv.exists():
