@@ -18,5 +18,5 @@ Impartida por el profesor _Frances Aràndiga Llaudes_
 Para compilar el documento, ejecutar desde la raíz del repositorio:
 
 ```bash
-inv build
+inv build -p
 ```
