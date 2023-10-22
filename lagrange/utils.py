@@ -1,17 +1,19 @@
 import datetime as dt
 
-def tiempo_a_hora(tiempo: dt.datetime) -> str:
+def minutos_a_hora(minutos: float, inicio: dt.time = dt.time(0)) -> dt.time:
     """
-    Convierte un tiempo en formato YYYY-MM-DD HH:MM:SS a HH:MM.
-    :param tiempo: tiempo en minutos
-    :return: hora en formato HH:MM
-    """
-    return tiempo.strftime("%H:%M")
+    Convierte un número de minutos a un objeto `time`.
 
-def sympy_a_pgf(expr: str) -> str:
+    Args:
+    -----
+    minutos: float -- Número de minutos.
+    inicio: dt.time -- Hora de inicio.
+
+    Returns:
+    --------
+    dt.time -- Hora resultante.
     """
-    Convierte una expresión de sympy a una expresión de pgfplots.
-    :param expr: expresión de sympy
-    :return: expresión de pgfplots
-    """
-    return expr.replace("**", "^")
+    delta = dt.timedelta(minutes=minutos)
+    inico_dt = dt.datetime.combine(dt.date.today(), inicio)
+
+    return (inico_dt + delta).time()

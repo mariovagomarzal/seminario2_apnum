@@ -1,46 +1,67 @@
-import pandas as pd
 from pathlib import Path
+import datetime as dt
 
-from lagrange.utils import tiempo_a_hora
+import pandas as pd
+
+from lagrange.constantes import (
+    NOMBRE_GLUCOSA,
+    NOMBRE_TIEMPO,
+    TABLA_GLUCOSA,
+    TABLA_TIEMPO_HORA,
+    TABLA_TIEMPO_MINUTOS,
+)
+from lagrange.utils import minutos_a_hora
 
 
-def generar_tabla(datos: Path, inicio: int = -1, final: int = -1) -> str:
+def tabla_glucosa(
+    datos: Path,
+    formato_hora: bool = False,
+    hora_inicio: dt.time = dt.time(0),
+    inicio: int = -1,
+    final: int = -1,
+) -> str:
     """
-    Genera una tabla de valores donde la primera columna representa las
-    horas del día y la segunda la concentración de glucosa en sangre.
-    :param datos: archivo csv con los datos de glucosa
-    :param inicio: cantidad de filas a incluir desde el inicio
-    :param final: cantidad de filas a incluir desde el final
-    :return: tabla de valores latex
-    """
+    Genera una tabla LaTeX con los datos de la glucosa. Si `inicio` o
+    `final` son negativos, se toman todos los datos. En caso contrario,
+    muestra tantas filas iniciales o finales como se indique.
     
-    # Leer datos
-    df = pd.read_csv(datos, parse_dates=["hora"])
+    Args:
+    -----
+    datos: Path -- Ruta al archivo con los datos.
+    formato_hora: bool -- Si `True`, se muestra la hora en formato
+        `hh:mm`. Si `False`, se muestra como los minutos transcurridos.
+    hora_inicio: dt.time -- Hora de inicio.
+    inicio: int -- Número de filas iniciales.
+    final: int -- Número de filas finales.
 
-    if inicio < 0 or final < 0:
-        inicio = len(df)
-        final = 0
-    else:
-        final = len(df) - final
+    Returns:
+    --------
+    str -- Tabla LaTeX.
+    """
+    df = pd.read_csv(datos)
 
-    # Generar tabla
-    latex = "\\begin{tabular}{cc}\n"
-    latex += "\\toprule\n"
-    latex += "Hora & Glucosa ($\\unitfrac{mg}{dL}$) \\\\\n"
-    latex += "\\midrule\n"
+    mostrar_todo = inicio < 0 and final < 0
+    if not mostrar_todo:
+        df = df.drop(df.index[inicio:(len(df) - final)])
 
-    primera_vez = True
+    latex = r"\begin{tabular}{cc}" + "\n"
+    latex += r"\toprule" + "\n"
+    tabla_tiempo = TABLA_TIEMPO_HORA if formato_hora else TABLA_TIEMPO_MINUTOS
+    latex += f"{tabla_tiempo} & {TABLA_GLUCOSA} \\\\\n"
+    latex += r"\midrule" + "\n"
+
     for i, row in df.iterrows():
-        if inicio <= i < final:
-            if primera_vez:
-                latex += "$\\vdots$ & $\\vdots$ \\\\\n"
-                primera_vez = False
+        if formato_hora:
+            tiempo = minutos_a_hora(row[NOMBRE_TIEMPO], hora_inicio)
         else:
-            # Glucosa con dos decimales
-            latex += f"{tiempo_a_hora(row['hora'])} \
-                & ${row['glucosa']:.2f}$ \\\\\n"
+            tiempo = f"${row[NOMBRE_TIEMPO]}$"
 
-    latex += "\\bottomrule\n"
-    latex += "\\end{tabular}\n"
+        latex += f"{tiempo} & {row[NOMBRE_GLUCOSA]:.2f} \\\\\n"
+
+        if not mostrar_todo and i == inicio - 1:
+            latex += "\\vdots & \\vdots \\\\\n"
+
+    latex += r"\bottomrule" + "\n"
+    latex += r"\end{tabular}"
 
     return latex
