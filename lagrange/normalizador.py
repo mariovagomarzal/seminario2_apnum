@@ -1,36 +1,46 @@
-import pandas as pd
-import datetime as dt
 from pathlib import Path
 
+import pandas as pd
 
-def normalizar(
-    datos: Path,
-    inicio: dt.datetime = dt.datetime(2023, 1, 1, 0, 0),
-    step: dt.timedelta = dt.timedelta(minutes=10),
-) -> pd.DataFrame:
+from lagrange.constantes import NOMBRE_GLUCOSA, NOMBRE_TIEMPO
+
+
+def normalizar_excel(excel: Path, paso: int = 10) -> pd.DataFrame:
     """
-    Normaliza los datos de un fichero .xlsx con una única columna de datos
-    de glucosa en sangre.
-    Normalizar consiste en añadir una columna inicial con la fecha y hora
-    de inicio y añadir una columna de intervalos de tiempo con el step
-    especificado.
-    Además, la columna de datos de glucosa en sangre se renombra a "glucosa".
-    :param datos: Fichero .xlsx con una única columna de datos de glucosa
-    en sangre.
-    :param inicio: Fecha y hora de inicio de los datos.
-    :param step: Intervalo de tiempo entre cada dato.
-    :return: DataFrame con los datos normalizados.
+    Normaliza el contenido de un archivo excel
+    que únicamente contiene una columna con la glucosa.
+    Para ello, nombrará la columna como `NOMBRE_GLUCOSA`
+    y creará una columna `NOMBRE_TIEMPO` con los valores
+    `0`, `paso`, `2*paso`, `3*paso`, etc.
+    
+    Args:
+    excel: Path -- Ruta al archivo excel.
+    paso: int -- Siendo `0` el primer valor de la columna,
+    se toman los valores que estén en las posiciones
+    `0`, `paso`, `2*paso`, `3*paso`, etc.
+    
+    Returns:
+    --------
+    pd.DataFrame -- `DataFrame` con las columnas.
     """
-    df = pd.read_excel(datos, header=None)
-    df.columns = ["glucosa"]
-    df["hora"] = pd.date_range(inicio, periods=len(df), freq=step)
+    df = pd.read_excel(excel, header=None)
+    df.columns = [NOMBRE_GLUCOSA]
+
+    df[NOMBRE_TIEMPO] = df.index * paso
+
     return df
 
-def guardar_csv(df: pd.DataFrame, nombre: str) -> None:
+
+def guardar_csv(df: pd.DataFrame, csv: Path) -> None:
     """
-    Guarda un DataFrame en un fichero .csv.
-    :param df: DataFrame a guardar.
-    :param nombre: Nombre del fichero .csv.
-    :return: None
+    Guarda un `DataFrame` como archivo CSV.
+    
+    Args:
+    df: pd.DataFrame -- `DataFrame` a guardar.
+    csv: Path -- Ruta al archivo csv.
+    
+    Returns:
+    --------
+    None
     """
-    df.to_csv(nombre, index=False)
+    df.to_csv(csv, index=False)

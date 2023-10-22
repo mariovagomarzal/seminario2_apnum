@@ -1,7 +1,7 @@
 from invoke import task
 from pathlib import Path
 
-from lagrange.normalizador import normalizar, guardar_csv
+from lagrange.normalizador import normalizar_excel, guardar_csv
 
 
 @task
@@ -17,7 +17,7 @@ def datos(_):
         csv = Path("data") / f"{xlsx.stem}-out.csv"
         if not csv.exists():
             print(f"Normalizando {xlsx}...")
-            df = normalizar(xlsx)
+            df = normalizar_excel(xlsx)
             guardar_csv(df, csv)
 
 @task(datos)
