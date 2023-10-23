@@ -1,0 +1,18 @@
+\begin{frame}{El polinomio interpolador de Lagrange}
+  \begin{exampleblock}{Prblema interpolación de Lagrange}
+    Sea $f$ una función escalar y $x_0, x_1, \ldots, x_n$ un total de $n +
+    1$ nodos diferentes. El problema trata de encontrar $P_n(x) \in \Pi_n$
+    tal que
+    \[
+      P_n(x_i) = f(x_i), \quad i = 0, 1, \ldots, n.
+    \]
+  \end{exampleblock}
+
+  \begin{alertblock}{Teorema}
+    El problema de interpolación de Lagrange tiene solución única.
+  \end{alertblock}
+
+  La demostración pasa por resolver un sistema de ecuaciones lineales,
+  de manera que construir así el polinomio \alert{no es computacionalmente
+  eficiente}.
+\end{frame}

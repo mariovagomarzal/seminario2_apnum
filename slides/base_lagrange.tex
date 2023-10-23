@@ -1,0 +1,18 @@
+\begin{frame}{La base de Lagrange}
+  \begin{exampleblock}{Base de Lagrange}
+    La base de Lagrange de $\Pi_n$ en función de los nodos $x_0, x_1,
+    \ldots, x_n$, esta formada por un conjunto de polinomios $L_0(x),
+    L_1(x), \ldots, L_n(x)$ tal que
+    \[
+      P_n(x)=\sum_{i=0}^{n}f_{(x_i)}L_i(x).
+    \]
+
+    La forma de cada polinomio de la base es
+    \[
+      L_i(x)=\prod_{j=0, j \neq i}^{n}\frac{x-x_j}{x_i-x_j}.
+    \]
+  \end{exampleblock}
+
+  Esta base es útil para \alert{probar resultados teóricos} pero sigue
+  siendo \alert{computacionalmente ineficiente}.
+\end{frame}
