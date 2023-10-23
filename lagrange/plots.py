@@ -27,7 +27,7 @@ def plot_lagrange(
     x = sp.Symbol("x")
     polinomio = lagrange(x, nodos, valores)
 
-    latex = "\\addplot[\n"
+    latex = "\\addplot+[\n"
     
     dominio = (nodos[0], nodos[-1])
     latex += f"domain={dominio[0]}:{dominio[1]},\n"
@@ -38,6 +38,9 @@ def plot_lagrange(
     latex += "] "
 
     latex += f"{{{sympy_a_pgf(polinomio)}}};\n"
+
+    n = len(nodos)
+    latex += f"\\addlegendentry{{$P_{{{n - 1}}}$}}\n"
 
     return latex
 
@@ -60,7 +63,7 @@ def plot_nodos(
     --------
     str -- Código LaTeX del plot.
     """
-    latex = "\\addplot[\n"
+    latex = "\\addplot+[\n"
     
     latex += "only marks,\n"
     for opcion in opciones:
@@ -71,6 +74,8 @@ def plot_nodos(
     for i in range(len(nodos)):
         latex += f"({nodos[i]}, {valores[i]})\n"
     latex += "};\n"
+
+    latex += "\\addlegendentry{Nodos}\n"
 
     return latex
 
@@ -113,6 +118,8 @@ def plot_glucosa(
 
     latex += "\\begin{axis}[\n"
     latex += "mlineplot,\n"
+    latex += "xlabel={Tiempo ($\\unit{min}$)},\n"
+    latex += "ylabel={Glucosa ($\\unit{mg/dL}$)},\n"
     for opcion in opciones_axis:
         latex += f"{opcion},\n"
     latex += "]\n"
