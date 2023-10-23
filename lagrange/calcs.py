@@ -7,8 +7,7 @@ from lagrange.utils import format_float
 def base_lagrange(
     nodos: np.ndarray,
     valores: np.ndarray,
-    lineas: int = 1,
-) -> str:
+) -> list[str]:
     """
     Genera los cálculos de la base de Lagrange para el polinomio
     interpolador, en LaTeX.
@@ -39,29 +38,60 @@ def base_lagrange(
             f"\\frac{{{numerador}}}{{{denominador}}}"
         )
 
+    return base
+
+
+def items_base_lagrange(
+    base_lagrange: list[str],
+) -> str:
+    """
+    Genera un itemize de LaTeX con los polinomios de una base de Lagrange.
+
+    Args:
+    -----
+    base_lagrange: list[str] -- Polinomios de la base de Lagrange.
+
+    Returns:
+    --------
+    str -- Código LaTeX del itemize.
+    """
     latex = r"\begin{itemize}" + "\n"
-    for i in range(n):
-        latex += f"\\item $\displaystyle L_{{{i}}}(x) = {base[i]}$\n"
+    for i, pol in enumerate(base_lagrange):
+        latex += f"\\item $\displaystyle L_{{{i}}}(x) = {pol}$\n"
     latex += r"\end{itemize}" + "\n"
 
-    lineas_pol: list[str] = []
-    sumandos_por_linea = n // lineas
-    for i in range(lineas):
-        linea = ""
-        if i != lineas - 1:
-            for j in range(sumandos_por_linea):
-                linea += f"{base[i * sumandos_por_linea + j]} {valores[i]} + "
-            linea += "\\\\\n"
+    return latex
+
+
+def polinomio_base_lagrange(
+    base: list[str],
+    valores: np.ndarray,
+) -> str:
+    """
+    Genera el polinomio interpolador en la base de Lagrange, en LaTeX.
+
+    Args:
+    -----
+    base: list[str] -- Polinomios de la base de Lagrange.
+    valores: np.ndarray -- Valores de la función en los nodos.
+
+    Returns:
+    --------
+    str -- Código LaTeX del polinomio.
+    """
+    n = len(base)
+
+    latex = r"\begin{equation*}" + "\n"
+    latex += r"\textstyle " + f"P_{{{n - 1}}}(x) = "
+    for i, pol in enumerate(base):
+        valor = format_float(
+            round(valores[i], 2)
+        )
+        if i != n - 1:
+            latex += f"{pol} {valor} + "
         else:
-            for j in range(sumandos_por_linea + n % lineas - 1):
-                linea += f"{base[i * sumandos_por_linea + j]} {valores[i]} + "
-            linea += f"{base[-1]} {valores[-1]}." + "\n"
-
-        lineas_pol.append(r"\textstyle" + linea)
-
-    latex += r"\begin{multline*}" + "\n"
-    for linea in lineas_pol:
-        latex += linea
-    latex += r"\end{multline*}" + "\n"
+            latex += f"{pol} {valor}."
+    latex += "\n"
+    latex += r"\end{equation*}" + "\n"
 
     return latex
