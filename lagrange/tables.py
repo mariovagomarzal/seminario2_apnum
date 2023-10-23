@@ -15,7 +15,7 @@ from lagrange.utils import format_float, minutos_a_hora
 
 
 def tabla_glucosa(
-    datos: Path,
+    datos: pd.DataFrame,
     formato_hora: bool = False,
     hora_inicio: dt.time = dt.time(0),
     inicio: int = -1,
@@ -28,7 +28,7 @@ def tabla_glucosa(
     
     Args:
     -----
-    datos: Path -- Ruta al archivo con los datos.
+    datos: pd.DataFrame -- Datos de la glucosa.
     formato_hora: bool -- Si `True`, se muestra la hora en formato
         `hh:mm`. Si `False`, se muestra como los minutos transcurridos.
     hora_inicio: dt.time -- Hora de inicio.
@@ -39,11 +39,9 @@ def tabla_glucosa(
     --------
     str -- Tabla LaTeX.
     """
-    df = pd.read_csv(datos)
-
     mostrar_todo = inicio < 0 and final < 0
     if not mostrar_todo:
-        df = df.drop(df.index[inicio:(len(df) - final)])
+        datos = datos.drop(datos.index[inicio:(len(datos) - final)])
 
     latex = r"\begin{tabular}{cc}" + "\n"
     latex += r"\toprule" + "\n"
@@ -51,7 +49,7 @@ def tabla_glucosa(
     latex += f"{tabla_tiempo} & {TABLA_GLUCOSA} \\\\\n"
     latex += r"\midrule" + "\n"
 
-    for i, row in df.iterrows():
+    for i, row in datos.iterrows():
         if formato_hora:
             tiempo = minutos_a_hora(row[NOMBRE_TIEMPO], hora_inicio)
         else:
