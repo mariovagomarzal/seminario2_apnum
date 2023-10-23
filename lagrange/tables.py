@@ -49,7 +49,7 @@ def tabla_glucosa(
     latex += f"{tabla_tiempo} & {TABLA_GLUCOSA} \\\\\n"
     latex += r"\midrule" + "\n"
 
-    for i, row in datos.iterrows():
+    for i, (_, row) in enumerate(datos.iterrows()):
         if formato_hora:
             tiempo = minutos_a_hora(row[NOMBRE_TIEMPO], hora_inicio)
         else:

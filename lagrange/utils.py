@@ -2,6 +2,7 @@
 from pathlib import Path
 import datetime as dt
 
+import numpy as np
 import pandas as pd
 import sympy as sp
 
@@ -93,7 +94,7 @@ def cargar_datos(
 
 def obtener_nodos(
     df: pd.DataFrame,
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Obtiene los nodos y valores de un DataFrame.
 
