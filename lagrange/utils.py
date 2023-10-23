@@ -67,7 +67,7 @@ def sympy_a_pgf(formula: sp.Expr) -> str:
 
 def cargar_datos(
     path: Path,
-    filtro: callable,
+    filtro: callable = lambda df: df,
     filtro_kwargs: dict = None,
 ) -> pd.DataFrame:
     """
