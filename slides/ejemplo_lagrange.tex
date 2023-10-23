@@ -1,0 +1,31 @@
+\begin{frame}[fragile]{Ejemplo del cálculo de la base de Lagrange}
+  Supongamos que conocemos la concentración de glucosa en tres momentos del
+  día. Calculemos la base de Lagrange asociada a estos nodos.
+
+  \begin{multicols}{2}
+    \begin{pycode}[base_lagrange]
+      from lagrange.utils import cargar_datos
+      from lagrange.filtros import filtrar_equiespaciado
+      from lagrange.tables import tabla_glucosa
+
+      glucosa_filtrada = cargar_datos(
+        datos_glucosa,
+        filtro=filtrar_equiespaciado,
+        filtro_kwargs={"longitud": 3},
+      )
+    \end{pycode}
+
+    \begin{pycode}[base_lagrange]
+      # Generación de la tabla
+      tabla = tabla_glucosa(glucosa_filtrada)
+      print(tabla)
+    \end{pycode}
+
+    \columnbreak
+
+    \begin{pycode}[base_lagrange]
+      # Generación del cálculo
+      print("En proceso...")
+    \end{pycode}
+  \end{multicols}
+\end{frame}
