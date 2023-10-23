@@ -2,6 +2,10 @@
 import numpy as np
 import sympy as sp
 
+from lagrange.constantes import (
+    TABLA_TIEMPO_MINUTOS,
+    TABLA_GLUCOSA,
+)
 from lagrange.utils import sympy_a_pgf
 from lagrange.lagrange import lagrange
 
@@ -118,8 +122,8 @@ def plot_glucosa(
 
     latex += "\\begin{axis}[\n"
     latex += "mlineplot,\n"
-    latex += "xlabel={Tiempo ($\\unit{min}$)},\n"
-    latex += "ylabel={Glucosa ($\\unit{mg/dL}$)},\n"
+    latex += f"xlabel={{{TABLA_TIEMPO_MINUTOS}}},\n"
+    latex += f"ylabel={{{TABLA_GLUCOSA}}},\n"
     for opcion in opciones_axis:
         latex += f"{opcion},\n"
     latex += "]\n"

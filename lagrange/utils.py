@@ -5,6 +5,10 @@ import datetime as dt
 import pandas as pd
 import sympy as sp
 
+from lagrange.constantes import (
+    NOMBRE_TIEMPO,
+    NOMBRE_GLUCOSA,
+)
 
 def format_float(number: float) -> str:
     """
@@ -85,3 +89,22 @@ def cargar_datos(
     df = pd.read_csv(path)
     df = filtro(df, **filtro_kwargs)
     return df
+
+
+def obtener_nodos(
+    df: pd.DataFrame,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Obtiene los nodos y valores de un DataFrame.
+
+    Args:
+    -----
+    df: pd.DataFrame -- DataFrame con los datos.
+
+    Returns:
+    --------
+    Tuple[np.ndarray, np.ndarray] -- Nodos y valores.
+    """
+    nodos = df[NOMBRE_TIEMPO].to_numpy()
+    valores = df[NOMBRE_GLUCOSA].to_numpy()
+    return nodos, valores
