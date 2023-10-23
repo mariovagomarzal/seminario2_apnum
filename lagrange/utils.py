@@ -1,6 +1,8 @@
 """Utilidades para el módulo lagrange."""
+from pathlib import Path
 import datetime as dt
 
+import pandas as pd
 import sympy as sp
 
 
@@ -56,3 +58,30 @@ def sympy_a_pgf(formula: sp.Expr) -> str:
     """
     formula_str = str(formula)
     return formula_str.replace("**", "^")
+
+
+def cargar_datos(
+    path: Path,
+    filtro: callable,
+    filtro_kwargs: dict = None,
+) -> pd.DataFrame:
+    """
+    Carga los datos de un archivo CSV
+    y los filtra según la función `filtro`.
+
+    Args:
+    -----
+    path: Path -- Ruta al archivo CSV.
+    filtro: callable -- Función de filtrado.
+    filtro_kwargs: dict -- Argumentos adicionales para `filtro`.
+
+    Returns:
+    --------
+    pd.DataFrame -- Datos filtrados.
+    """
+    if filtro_kwargs is None:
+        filtro_kwargs = {}
+
+    df = pd.read_csv(path)
+    df = filtro(df, **filtro_kwargs)
+    return df

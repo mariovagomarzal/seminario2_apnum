@@ -31,6 +31,13 @@
 \institute{Universitat de València}
 
 \begin{document}
+  % Lista de "imports" (y otros) de PythonTeX.
+  \begin{pythontexcustomcode}[begin]{py}
+    from pathlib import Path
+
+    datos_glucosa = Path("data/DatosGlucosa-out.csv")
+  \end{pythontexcustomcode}
+
   {
     % A workaround to hide an overfull \vbox warning produced by
     % the title frame of the Metropolis theme.
