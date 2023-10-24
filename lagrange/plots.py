@@ -84,13 +84,92 @@ def plot_nodos(
     return latex
 
 
+def plot_funcion(
+    nodos: np.ndarray,
+    funcion: sp.Expr,
+    opciones: list[str] = [],
+):
+    """
+    Genera un plot de PGFPlots de la función.
+
+    Args:
+    -----
+    nodos: np.ndarray -- Nodos para determinar el dominio.
+    funcion: str -- Función a plotear.
+    opciones: str -- Opciones de PGFPlots.
+
+    Returns:
+    --------
+    str -- Código LaTeX del plot.
+    """
+    latex = "\\addplot+[\n"
+
+    dominio = (nodos[0], nodos[-1])
+    latex += f"domain={dominio[0]}:{dominio[1]},\n"
+    latex += "samples=100,\n"
+    latex += "smooth,\n"
+    for opcion in opciones:
+        latex += f"{opcion},\n"
+    latex += "] "
+
+    latex += f"{{{sympy_a_pgf(funcion)}}};\n"
+
+    return latex
+
+
+def plot_error(
+    punto: tuple[float, float],
+    funcion: sp.Expr,
+    texto_error: str,
+    opciones: list[str] = [],
+):
+    
+    """
+    Genera un plot de PGFPlots del error.
+
+    Args:
+    -----
+    punto: tuple[float, float] -- Punto donde se evalúa el error.
+    funcion: sp.Expr -- Función a plotear.
+    texto_error: str -- Texto que acompaña al error.
+    opciones: str -- Opciones de PGFPlots.
+
+    Returns:
+    --------
+    str -- Código LaTeX del plot.
+    """
+    var = funcion.free_symbols.pop()
+    error_x, error_y = punto
+    valor_real = funcion.subs(var, error_x).evalf()
+    latex = f"\\node (val_real) at (axis cs: {error_x}, {valor_real}) {{}};\n"
+    latex += f"\\node (val_aprox) at (axis cs: {error_x}, {error_y}) {{}};\n"
+
+    latex += "\\draw[\n"
+    latex += "->,\n"
+    latex += "thin,\n"
+    latex += "dashed,\n"
+    latex += "draw=TolDarkRed,\n"
+    for opcion in opciones:
+        latex += f"{opcion},\n"
+    latex += "] "
+    latex += f"(val_real.center) -- (val_aprox.center)\n"
+    latex += f"node [midway, right] {{{texto_error}}};\n"
+
+    return latex
+
+
 def plot_glucosa(
     nodos: np.ndarray,
     valores: np.ndarray,
     incluir_lagrange: bool = True,
     incluir_nodos: bool = True,
+    funcion: sp.Expr = None,
+    punto_error: tuple[float, float] = None,
+    texto_error: str = "$\\varepsilon$",
     opciones_lagrange: list[str] = [],
     opciones_nodos: list[str] = [],
+    opciones_funcion: list[str] = [],
+    opciones_error: list[str] = [],
     opciones_tikz: list[str] = [],
     opciones_axis: list[str] = [],
 ) -> str:
@@ -103,9 +182,16 @@ def plot_glucosa(
     valores: np.ndarray -- Valores de la función en los nodos.
     incluir_lagrange: bool -- Incluir el polinomio de Lagrange.
     incluir_nodos: bool -- Incluir los nodos.
+    funcion: sp.Expr -- Función a plotear.
+    error: tuple[float, float] -- Abscisa del punto donde se evalúa 
+    el error.
+    texto_error: str -- Texto que acompaña al error.
     opciones_lagrange: str -- Opciones de PGFPlots para el polinomio de Lagrange.
     opciones_nodos: str -- Opciones de PGFPlots para los nodos.
-    opciones: str -- Opciones de PGFPlots.
+    opciones_funcion: str -- Opciones de PGFPlots para la función.
+    opciones_error: str -- Opciones de PGFPlots para el error.
+    opciones_tikz: str -- Opciones de TikZ.
+    opciones_axis: str -- Opciones de PGFPlots.
     
     Returns:
     --------
@@ -132,6 +218,15 @@ def plot_glucosa(
         latex += plot_lagrange(nodos, valores, opciones_lagrange)
     if incluir_nodos:
         latex += plot_nodos(nodos, valores, opciones_nodos)
+    if funcion is not None:
+        latex += plot_funcion(nodos, funcion, opciones_funcion)
+    if punto_error is not None:
+        latex += plot_error(
+            punto_error,
+            funcion,
+            texto_error,
+            opciones_error,
+        )
 
     latex += "\\end{axis}\n"
     latex += "\\end{tikzpicture}\n"
