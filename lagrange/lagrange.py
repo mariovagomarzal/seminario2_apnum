@@ -3,7 +3,10 @@ import numpy as np
 import sympy as sp
 
 
-def diferencias_divididas(nodos: np.ndarray, valores: np.ndarray) -> np.ndarray:
+def diferencias_divididas(
+    nodos: np.ndarray,
+    valores: np.ndarray
+) -> np.ndarray:
     """
     Genera una lista con las diferencias divididas de Newton (diagonal
     principal de la tabla de diferencias divididas).
@@ -27,10 +30,14 @@ def diferencias_divididas(nodos: np.ndarray, valores: np.ndarray) -> np.ndarray:
             tabla[i, j] = (tabla[i, j - 1] - tabla[i - 1, j - 1]) \
                 / (nodos[i] - nodos[i - j])
 
-    return tabla.diagonal()
+    return tabla
 
 
-def lagrange(x: sp.Symbol, nodos: np.ndarray, valores: np.ndarray) -> sp.Expr:
+def lagrange(
+    x: sp.Symbol, 
+    nodos: np.ndarray, 
+    valores: np.ndarray
+) -> sp.Expr:
     """
     Genera el polinomio de interpolación de Lagrange.
 
@@ -44,7 +51,7 @@ def lagrange(x: sp.Symbol, nodos: np.ndarray, valores: np.ndarray) -> sp.Expr:
     --------
     sp.Expr -- Polinomio de interpolación.
     """
-    difs = diferencias_divididas(nodos, valores)
+    difs = diferencias_divididas(nodos, valores).diagonal()
 
     n = len(nodos)
     polinomio = difs[-1]

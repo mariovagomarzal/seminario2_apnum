@@ -1,0 +1,36 @@
+\begin{frame}[fragile]{Ejemplo del cálculo de la forma de Newton}
+  Igual que antes, calcularemos el polinomio de Lagrange conociendo la
+  concentración de glucosa en sange en tres momentos del día.
+
+  \begin{pycode}[ejemplo_newton]
+    from lagrange.calcs import (
+      tabla_diferencias_divididas,
+      polinomio_newton
+    )
+    from lagrange.utils import cargar_datos, obtener_nodos
+    from lagrange.filtros import filtrar_equiespaciado
+    from lagrange.tables import tabla_glucosa
+
+    glucosa = cargar_datos(
+      datos_glucosa,
+      filtro=filtrar_equiespaciado,
+      filtro_kwargs={"longitud": 3},
+    )
+
+    nodos, valores = obtener_nodos(glucosa)
+  \end{pycode}
+  
+  \begin{center}
+    \begin{pycode}[ejemplo_newton]
+      difs = tabla_diferencias_divididas(nodos, valores)
+      print(difs)
+    \end{pycode}
+  \end{center}
+
+  Con la tabla de diferencias divididas, la forma del polinomio de Newton
+  es trivial:
+  \begin{pycode}[ejemplo_newton]
+    pol = polinomio_newton(nodos, valores)
+    print(pol)
+  \end{pycode}
+\end{frame}

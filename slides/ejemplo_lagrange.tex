@@ -1,0 +1,50 @@
+\begin{frame}[fragile]{Ejemplo del cálculo de la base de Lagrange}
+  Supongamos que conocemos la concentración de glucosa en tres momentos del
+  día. Calculemos la \alert{base de Lagrange} asociada a estos nodos.
+
+  \begin{multicols}{2}
+    \begin{pycode}[base_lagrange]
+      import numpy as np
+
+      from lagrange.utils import cargar_datos
+      from lagrange.filtros import filtrar_equiespaciado
+      from lagrange.tables import tabla_glucosa
+      from lagrange.calcs import (
+        base_lagrange,
+        items_base_lagrange,
+        polinomio_base_lagrange,
+      )
+
+      glucosa_filtrada = cargar_datos(
+        datos_glucosa,
+        filtro=filtrar_equiespaciado,
+        filtro_kwargs={"longitud": 3},
+      )
+
+      nodos = glucosa_filtrada["Tiempo"].to_numpy()
+      valores = glucosa_filtrada["Glucosa"].to_numpy()
+      base = base_lagrange(nodos, valores)
+    \end{pycode}
+
+    \begin{pycode}[base_lagrange]
+      # Generación de la tabla
+      tabla = tabla_glucosa(glucosa_filtrada)
+      print(tabla)
+    \end{pycode}
+
+    \columnbreak
+
+    \begin{pycode}[base_lagrange]
+      # Generación del cálculo de la base
+      items = items_base_lagrange(base)
+      print(items)
+    \end{pycode}
+  \end{multicols}
+
+  Multiplicando cada término de la base por su coeficiente, tenemos que
+  \begin{pycode}[base_lagrange]
+    # Generación del polinomio
+    polinomio = polinomio_base_lagrange(base, valores)
+    print(polinomio)
+  \end{pycode}
+\end{frame}

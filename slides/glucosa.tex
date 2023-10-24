@@ -1,0 +1,46 @@
+\begin{frame}[fragile]{Midiendo la concentración de glucosa en sangre}
+  Tenemos las medidas de la concentración de glucosa en sangre de una
+  persona diabética a lo largo de un día. Queremos encontrar una
+  \alert{función continua} que discriba su evolución.
+  
+  \begin{multicols}{2}
+    \begin{pycode}[glucosa]
+      from lagrange.utils import cargar_datos, obtener_nodos
+      from lagrange.filtros import filtrar_equiespaciado
+      from lagrange.tables import tabla_glucosa
+      from lagrange.plots import plot_glucosa
+
+      glucosa_filtrada = cargar_datos(
+        datos_glucosa,
+        filtro=filtrar_equiespaciado,
+        filtro_kwargs={"longitud": 12},
+      )
+    \end{pycode}
+
+    \begin{pycode}[glucosa]
+      # Generación de la tabla
+      tabla = tabla_glucosa(glucosa_filtrada, inicio=3, final=3)
+      print(tabla)
+    \end{pycode}
+
+    \columnbreak
+
+    \begin{pycode}[glucosa]
+      # Generación de la gráfica
+      nodos, valores = obtener_nodos(glucosa_filtrada)
+      print(plot_glucosa(
+        nodos,
+        valores,
+        opciones_lagrange = ["dashed"],
+        opciones_tikz = [
+          "scale=0.62",
+          "transform shape",
+        ],
+        opciones_axis = [
+          "thick",
+          "legend pos=north west",
+        ],
+      ))
+    \end{pycode}
+  \end{multicols}
+\end{frame}
