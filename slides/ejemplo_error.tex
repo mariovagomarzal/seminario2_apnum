@@ -1,0 +1,57 @@
+\begin{frame}[fragile]{Ejemplo de acotación del error}
+  Un estudio bióligo sugiere que la concentración de glucosa en sangre
+  según los minutos transcurridos viene dada por la función
+  \[
+    f(t) = \cos(0.001t) + 126.
+  \]
+
+  \begin{multicols}{2}
+    Aplicando el teorema del error de aproximación, puesto que
+    \[
+      \left\lvert f^{(3)}(t) \right\rvert \le 0.001^3 = 10^{-9},
+    \]
+    tenemos que
+    \[
+      \left\lvert f(t) - P_2(t) \right\rvert \le 0.022,
+    \]
+    haciendo los cálculos adecuados.
+
+    \columnbreak
+
+    \begin{pycode}
+      import sympy as sp
+      import numpy as np
+  
+      from lagrange.utils import cargar_datos, obtener_nodos
+      from lagrange.plots import plot_glucosa
+      from lagrange.lagrange import lagrange
+  
+      archivo_glucosa = Path("data/GlucosaCoseno.csv")
+      glucosa_coseno = cargar_datos(archivo_glucosa)
+  
+      nodos, valores = obtener_nodos(glucosa_coseno)
+  
+      x = sp.Symbol("x")
+      f = sp.cos(0.001 * x) + 126
+      pol = lagrange(x, nodos, valores)
+      error = (350, pol.subs(x, 350).evalf())
+  
+      plot = plot_glucosa(
+        nodos,
+        valores,
+        funcion=f,
+        punto_error=error,
+        texto_error=r"$\left\lvert \varepsilon \right\rvert \le 0.022$",
+        opciones_lagrange=["dashed"],
+        opciones_axis=[
+          "trig format plots=rad",
+        ],
+        opciones_tikz=[
+          "scale=0.6",
+          "transform shape",
+        ]
+      )
+      print(plot)
+    \end{pycode}
+  \end{multicols}
+\end{frame}
