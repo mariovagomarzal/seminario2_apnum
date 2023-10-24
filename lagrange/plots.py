@@ -37,6 +37,7 @@ def plot_lagrange(
     latex += f"domain={dominio[0]}:{dominio[1]},\n"
     latex += "samples=100,\n"
     latex += "smooth,\n"
+    latex += "no marks,\n"
     for opcion in opciones:
         latex += f"{opcion},\n"
     latex += "] "
@@ -95,8 +96,8 @@ def plot_funcion(
     Args:
     -----
     nodos: np.ndarray -- Nodos para determinar el dominio.
-    funcion: str -- Función a plotear.
-    opciones: str -- Opciones de PGFPlots.
+    funcion: sp.Expr -- Función a plotear.
+    opciones: list[str] -- Opciones de PGFPlots.
 
     Returns:
     --------
@@ -108,11 +109,14 @@ def plot_funcion(
     latex += f"domain={dominio[0]}:{dominio[1]},\n"
     latex += "samples=100,\n"
     latex += "smooth,\n"
+    latex += "no marks,\n"
     for opcion in opciones:
         latex += f"{opcion},\n"
     latex += "] "
 
     latex += f"{{{sympy_a_pgf(funcion)}}};\n"
+
+    latex += f"\\addlegendentry{{${sp.latex(funcion)}$}}\n"
 
     return latex
 
@@ -132,7 +136,7 @@ def plot_error(
     punto: tuple[float, float] -- Punto donde se evalúa el error.
     funcion: sp.Expr -- Función a plotear.
     texto_error: str -- Texto que acompaña al error.
-    opciones: str -- Opciones de PGFPlots.
+    opciones: list[str] -- Opciones de PGFPlots.
 
     Returns:
     --------
@@ -166,6 +170,8 @@ def plot_glucosa(
     funcion: sp.Expr = None,
     punto_error: tuple[float, float] = None,
     texto_error: str = "$\\varepsilon$",
+    x_label: str = TABLA_TIEMPO_MINUTOS,
+    y_label: str = TABLA_GLUCOSA,
     opciones_lagrange: list[str] = [],
     opciones_nodos: list[str] = [],
     opciones_funcion: list[str] = [],
@@ -208,8 +214,8 @@ def plot_glucosa(
 
     latex += "\\begin{axis}[\n"
     latex += "mlineplot,\n"
-    latex += f"xlabel={{{TABLA_TIEMPO_MINUTOS}}},\n"
-    latex += f"ylabel={{{TABLA_GLUCOSA}}},\n"
+    latex += f"xlabel={{{x_label}}},\n"
+    latex += f"ylabel={{{y_label}}},\n"
     for opcion in opciones_axis:
         latex += f"{opcion},\n"
     latex += "]\n"
