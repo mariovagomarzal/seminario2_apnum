@@ -168,4 +168,33 @@ def polinomio_newton(
     --------
     str -- Código LaTeX del polinomio.
     """
-    return ""
+    difs = diferencias_divididas(nodos, valores).diagonal()
+
+    n = len(nodos)
+
+    latex = "\\begin{equation*}\n"
+    latex += "\\textstyle " + f"P_{{{n - 1}}}(x) = "
+    for i in range(n):
+        valor = format_float(difs[i], 5)
+
+        monomios = ""
+        if i != 0:
+            for j in range(i):
+                monomios += f"(x - {format_float(nodos[j])})"
+
+        if i != n - 1:
+            valor_sucesor = format_float(difs[i + 1], 5)
+            if valor_sucesor.startswith("-"):
+                end = ""
+            else:
+                end = " + "
+        else:
+            end = "."
+        
+        latex += f"{valor} {monomios}{end}"
+
+
+    latex += "\n"
+    latex += "\\end{equation*}\n"
+
+    return latex
