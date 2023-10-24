@@ -1,7 +1,12 @@
 """Utilidades para mostrar los cálculos de Lagrange."""
 import numpy as np
 
+from lagrange.constantes import (
+    TABLA_TIEMPO_MINUTOS,
+    TABLA_GLUCOSA,
+)
 from lagrange.utils import format_float
+from lagrange.lagrange import diferencias_divididas
 
 
 def base_lagrange(
@@ -95,3 +100,72 @@ def polinomio_base_lagrange(
     latex += r"\end{equation*}" + "\n"
 
     return latex
+
+
+def tabla_diferencias_divididas(
+    nodos: np.ndarray,
+    valores: np.ndarray,
+) -> str:
+    """
+    Genera una tabla de LaTeX con las diferencias divididas.
+
+    Args:
+    -----
+    nodos: np.ndarray -- Nodos.
+    valores: np.ndarray -- Valores de la función en los nodos.
+
+    Returns:
+    --------
+    str -- Código LaTeX de la tabla.
+    """
+    difs = diferencias_divididas(nodos, valores)
+    
+    n = len(nodos)
+
+    n_columnas = "c" * (n + 1)
+    columnas = [f"$f[\\cdot] = \\text{{{TABLA_GLUCOSA}}}$"]
+    for i in range(2, n + 1):
+        puntos = ", ".join(["\\cdot" for _ in range(i)])
+        columnas.append(f"$f[{puntos}]$")
+
+    latex = f"\\begin{{tabular}}{{{n_columnas}}}" + "\n"
+    latex += r"\toprule" + "\n"
+    latex += f"$x_i = \\text{{{TABLA_TIEMPO_MINUTOS}}}$ & " 
+    latex += " & ".join(columnas) + r"\\" + "\n"
+    latex += r"\midrule" + "\n"
+
+    for i in range(n):
+        cadena_difs = []
+        for j in range(n):
+            if i < j:
+                cadena_difs.append("--")
+            else:
+                cadena_difs.append(
+                    f"${format_float(difs[i, j], 5)}$"
+                )
+        latex += f"${format_float(nodos[i])}$ & "
+        latex += " & ".join(cadena_difs) + r" \\" + "\n"
+
+    latex += r"\bottomrule" + "\n"
+    latex += r"\end{tabular}" + "\n"
+
+    return latex
+
+
+def polinomio_newton(
+    nodos: np.ndarray,
+    valores: np.ndarray,
+) -> str:
+    """
+    Genera el polinomio interpolador en la base de Newton, en LaTeX.
+
+    Args:
+    -----
+    nodos: np.ndarray -- Nodos.
+    valores: np.ndarray -- Valores de la función en los nodos.
+
+    Returns:
+    --------
+    str -- Código LaTeX del polinomio.
+    """
+    return ""

@@ -11,7 +11,7 @@ from lagrange.constantes import (
     NOMBRE_GLUCOSA,
 )
 
-def format_float(number: float) -> str:
+def format_float(number: float, precision: int = 2) -> str:
     """
     Formatea un número de punto flotante.
 
@@ -23,9 +23,17 @@ def format_float(number: float) -> str:
     --------
     str -- Número formateado.
     """
-    numero_str = str(number)
-    if numero_str.endswith(".0"):
-        return numero_str[:-2]
+    numero_str = str(round(number, precision))
+
+    # Si contiene notación del tipo e se convierte a notación \cdot 10^{x}
+    if "e" in numero_str:
+        split_e = numero_str.split("e")
+        antes_e = split_e[0]
+        despues_e = split_e[1]
+
+        exponente = int(despues_e)
+        numero_str = antes_e + r"\cdot 10^{" + str(exponente) + "}"
+
     return numero_str
 
 

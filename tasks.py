@@ -24,6 +24,6 @@ def datos(_):
 def build(c, pythontex=False):
     print("Compilando LaTeX...")
     if pythontex:
-        c.run("latexmk main.tex")
+        c.run("latexmk main.tex", warn=True)
         c.run("pythontex main.tex")
     c.run("latexmk main.tex")
