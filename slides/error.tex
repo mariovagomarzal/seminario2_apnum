@@ -1,0 +1,50 @@
+\begin{frame}[fragile]{Forma del error de aproximación}
+  \begin{exampleblock}{Forma del error}
+    Sea $f$ una función $n + 1$ veces diferenciable sean
+    $x_0, x_1, \ldots, x_n$ un total de $n + 1$ nodos distintos.
+    Entonces, para todo $x \in \text{int}(x_1, \ldots, x_n)$ existe $\xi_x$
+    tal que
+    \[
+      f(x) - P_n(x) = \frac{f^{(n + 1)}(\xi_x)}{(n + 1)!}
+      \prod_{i = 0}^n (x - x_i).
+    \]
+  \end{exampleblock}
+
+  \begin{center}
+    \begin{pycode}
+      import numpy as np
+      import sympy as sp
+      
+      from lagrange.lagrange import lagrange
+      from lagrange.plots import plot_glucosa
+  
+      x = sp.symbols("x")
+      f = sp.sqrt(x)
+      nodos = np.array([0, 3, 6])
+      valores = np.sqrt(nodos)
+
+      pol = lagrange(x, nodos, valores)
+      x_error = 1.5
+      y_error = pol.subs(x, x_error).evalf()
+
+  
+      plot = plot_glucosa(
+        nodos,
+        valores,
+        funcion=f,
+        punto_error=(x_error, y_error),
+        x_label="$x$",
+        y_label="$y$",
+        opciones_lagrange=["dashed"],
+        opciones_axis=[
+          "legend pos=south east",
+        ],
+        opciones_tikz=[
+          "scale=0.62",
+          "transform shape",
+        ],
+      )
+      print(plot)
+    \end{pycode}
+  \end{center}
+\end{frame}
