@@ -1,0 +1,26 @@
+\begin{frame}{La forma de Newton del polinomio interpolador}
+  Para obtener la \alert{propiedad de permanencia}, si tenemos el polinomio
+  $P_{n - 1}$ que interpola $n$ nodos, hemos de hallar $h$ de manera que
+  \[
+    P_n(x) = P_{n - 1} + h(x)
+  \]
+  interpole los $n$ nodos y uno adicional.
+
+  \begin{exampleblock}{Forma de Newton}
+    Haciendo los cálculos, tenemos que
+    \[
+      P_n(x) = f[x_0] + f[x_0, x_1](x - x_0) + \dots 
+      + f[x_0, \dots, x_n](x - x_0) \dots (x - x_{n - 1}),
+    \]
+    donde
+    \[
+      f[x_0] = f(x_0)
+      \quad \text{y} \quad
+      f[x_0, \dots, x_k] =
+      \frac{f(x_i) - P_{n - 1}(x_n)}{\prod_{j=0}^{i - 1} (x_i - x_j)}.
+    \]
+  \end{exampleblock}
+
+  Existe una manera \alert{más eficiente} de calcular los coeficientes,
+  también conocida como \alert{diferencias divididas}.
+\end{frame}
